@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../db_helper.dart';
 import 'package:intl/intl.dart';
-// Без мілісекунд
+// Без мілісекунд /\
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({Key? key}) : super(key: key);
@@ -10,10 +10,16 @@ class NotesScreen extends StatefulWidget {
   _NotesScreenState createState() => _NotesScreenState();
 }
 
+//управління станом екрану
 class _NotesScreenState extends State<NotesScreen> {
+  //ключ форми що дозволяє нею керувати
   final _formKey = GlobalKey<FormState>();
+
+  //для інпута
   final _noteController = TextEditingController();
+  //екземпляр класу
   final DatabaseHelper _dbHelper = DatabaseHelper();
+  //список нотаток
   List<Map<String, dynamic>> _notes = [];
 
   @override
@@ -22,6 +28,7 @@ class _NotesScreenState extends State<NotesScreen> {
     _loadNotes();
   }
 
+  //отримує нотатки
   Future<void> _loadNotes() async {
     final notes = await _dbHelper.getNotes();
     setState(() {
@@ -29,10 +36,14 @@ class _NotesScreenState extends State<NotesScreen> {
     });
   }
 
+  //додавання запису
   Future<void> _addNote() async {
+    //чи заповнене поле?
     if (_formKey.currentState!.validate()) {
       await _dbHelper.insertNote(_noteController.text.trim());
+      //очищає поле
       _noteController.clear();
+      //одразу виводить
       await _loadNotes();
     }
   }
@@ -103,8 +114,9 @@ class _NotesScreenState extends State<NotesScreen> {
               child: _notes.isEmpty
                   ? const Center(child: Text('No notes yet.'))
                   : ListView.builder(
-                itemCount: _notes.length,
-                itemBuilder: (context, index) {
+                  itemCount: _notes.length,
+                  //як будуватиметься кожен item
+                  itemBuilder: (context, index) {
                   final note = _notes[index];
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),

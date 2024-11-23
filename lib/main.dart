@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'db_helper.dart';
 import './widjets/notes_screen.dart';
 
 void main() {
